@@ -17,13 +17,16 @@ def extract_wwr_jobs(keyword):
       for post in posts:
         anchors = post.find_all('a')
         anchor = anchors[1]
-        company, kind, region = anchor.find_all('span', class_='company')
+        link = anchor['href']
+        company, kind, location = anchor.find_all('span', class_='company')
         title = anchor.find('span', class_='title')
         job_data = {
-          'company' : company,
-          'title' : title,
-          'region' : region
+          'company' : company.string,
+          'location' : location.string,
+          'position' : title,
+          'link': f"https://weworkremotely.com/{link}"
         }
+
         results.append(job_data)
     return results
   
