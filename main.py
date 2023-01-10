@@ -1,20 +1,20 @@
+from flask import Flask, render_template, request
+#request goes to the web and requests for contents
 from extractors.indeed import extract_indeed_jobs
 from extractors.wwr import extract_wwr_jobs
 
-keyword = input("What do you want to search for?")
+app = Flask("JobScrapper")
 
-indeed = extract_indeed_jobs(keyword)
-wwr = extract_wwr_jobs(keyword)
+@app.route("/") #decorator of a function right below
+def home():
+  return render_template("home.html", name="nico")
 
-jobs = indeed + wwr # both indeed and wwr return list, so we can combine them
+@app.route("/search")
+def search():
+  keyword = request.args.get("keyword")
+  indeed = extract_indeed_jobs(keyword)
+  wwr = extract_wwr_jobs(keyword)
+  jobs = indeed + wwr
+  return render_template("search.html", keyword=keyword, jobs=jobs)
 
-file = open(f"{keyword}.csv", "w") # w is writing
-file.write("Position,Company,Location,URL\n")
-
-
-
-for job in jobs:
-  file.write(f"{job['position']},{job['company']},{job['location']},{job['link']}\n")
-
-file.close()
-
+app.run("0.0.0.0")

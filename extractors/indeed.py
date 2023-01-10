@@ -65,3 +65,5 @@ def extract_indeed_jobs(keyword):
             job_data[each] = job_data[each].replace(",", " ")
         results.append(job_data)
   return results
+
+
