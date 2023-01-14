@@ -23,8 +23,6 @@ def get_page_count(keyword):
       return count
 
 
-
-
 def extract_indeed_jobs(keyword):
   
   pages = get_page_count(keyword)
